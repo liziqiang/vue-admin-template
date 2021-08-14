@@ -1,10 +1,12 @@
 const Mock = require('mockjs')
 const { param2Obj } = require('./utils')
 
+const perm = require('./perm')
 const user = require('./user')
 const table = require('./table')
 
 const mocks = [
+  ...perm,
   ...user,
   ...table
 ]
