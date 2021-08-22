@@ -1,4 +1,3 @@
-import { createRouter } from './router'
 import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
@@ -10,7 +9,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login'] // no redirect whitelist
 
-createRouter().then((router) => {
+export function handlePermission(router) {
   router.beforeEach(async(to, from, next) => {
     // start progress bar
     NProgress.start()
@@ -63,4 +62,4 @@ createRouter().then((router) => {
     // finish progress bar
     NProgress.done()
   })
-})
+}

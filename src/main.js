@@ -13,7 +13,7 @@ import store from './store'
 import { createRouter } from './router'
 
 import '@/icons' // icon
-import '@/permission' // permission control
+import { handlePermission } from '@/permission' // permission control
 
 /**
  * If you don't want to use mock-server
@@ -36,6 +36,7 @@ Vue.use(ElementUI, { locale })
 Vue.config.productionTip = false
 
 createRouter().then((router) => {
+  handlePermission(router)
   new Vue({
     el: '#app',
     router,

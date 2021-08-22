@@ -27,10 +27,7 @@ Vue.use(Router)
 
 let router
 export const createRouter = () => {
-  // 缓存router及权限获取请求
-  if (router) { return Promise.resolve(router) }
-  if (createRouter.cachedPromise) { return createRouter.cachedPromise }
-  createRouter.cachedPromise = new Promise((resolve) => {
+  return new Promise((resolve) => {
     getPerm().then((permList) => {
       let routes = []
       const dynamicRoutes = filterRoutesByPerm(routesWithPerm, permList)
@@ -42,14 +39,6 @@ export const createRouter = () => {
       })
       resolve(router)
     })
-  })
-  return createRouter.cachedPromise
-}
-
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
-  createRouter().then((newRouter) => {
-    router.matcher = newRouter.matcher // reset router
   })
 }
 
