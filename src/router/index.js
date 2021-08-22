@@ -26,21 +26,24 @@ Vue.use(Router)
  */
 
 let router
-export const createRouter = async() => {
-  const permList = await getPerm()
-  return new Promise((resolve) => {
-    let routes = []
-    const dynamicRoutes = filterRoutesByPerm(routesWithPerm, permList)
-    routes = [...constantRoutes, ...dynamicRoutes]
-    if (!router) {
+export const createRouter = () => {
+  // 缓存router及权限获取请求
+  if (router) { return Promise.resolve(router) }
+  if (createRouter.cachedPromise) { return createRouter.cachedPromise }
+  createRouter.cachedPromise = new Promise((resolve) => {
+    getPerm().then((permList) => {
+      let routes = []
+      const dynamicRoutes = filterRoutesByPerm(routesWithPerm, permList)
+      routes = [...constantRoutes, ...dynamicRoutes]
       router = new Router({
         mode: 'history', // require service support
         scrollBehavior: () => ({ y: 0 }),
         routes
       })
-    }
-    resolve(router)
+      resolve(router)
+    })
   })
+  return createRouter.cachedPromise
 }
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
